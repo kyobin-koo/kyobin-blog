@@ -1,0 +1,150 @@
+---
+title: "Palmer Penguins"
+author: "kyobin"
+date: "2025-03-06"
+categories: [news, code, analysis]
+image: "image.jpg"
+---
+
+
+1조: 구경민, 구교빈, 권서연
+
+작성일: 2025년 3월 06일
+
+![](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuhrP3xaNK-ni0uifTDiiUe9Ly3x3gtNtImA&s)
+
+## Content
+
+1.  문제 정의
+2.  데이터 로드와 데이터 정보 확인
+3.  \[Q1\] 펭귄의 개체별 성비는 어떻게 되어있을까?
+4.  \[Q2\] 펭귄의 각 개체에 대한 지역별 개체수는 어떻게 되어있는가?
+5.  \[Q3\] 펭귄의 종별 부리 길이 분포는 어떻게 구성되어 있는가?
+6.  결론
+
+## 1. 문제 정의
+
+**펭귄유괴단**은 대한민국 경기도 안성시에 위치하며, ESG 경영을 기반의 펭귄 밀렵을 통해 고객만족을 추구하는 기업이다.
+
+펭귄유괴단은 지속가능한 밀렵을 위해 펭귄의 종별 성비가 맞게 밀렵을 수행한다.
+
+얼마 전, 펭귄의 긴 부리를 이용하여 칼을 만들겠다는 고객의 요구사항을 받았다.
+
+이에, 펭귄유괴단은 부리가 긴 펭귄의 종이 무엇인지, 그 펭귄이 어디에 많이 서식하고 있는지, 그리고 지속가능한 밀렵을 위해 그 종의 성비가 어떤지 확인하여 사냥의 목표를 설정하려고 한다.
+
+**Summary**
+
+-   펭귄의 종 별 성비는 어떻게 되는가?
+
+-   펭귄의 각 종에 대한 지역별 개체수는 어떻게 되어있는가?
+
+-   펭귄의 종별 부리 길이가 평균보다 긴 개체 수 그리고 짧은 수는 어떻게 되어있는가?
+
+## 2. 데이터 로드와 데이터 정보 확인
+
+```{python}
+import pandas as pd
+import numpy as np
+from palmerpenguins import load_penguins
+
+pen = load_penguins()
+pen = pen.dropna() # processing the missing value
+print(pen.info()) # dataframe information
+print(pen.describe()) # summary statistics
+```
+
+감사하게도 palmerpenguins 데이터는 남극의 각 지역에 대한 펭귄 종별 특징 데이터가 담겨있다.
+
+이를 이용하여 고객의 요구사항에 맞는 펭귄을 찾고 많이 서식하고 있는 정보를 알아보자
+
+먼저, 데이터를 불러오고 결측치(missing value)를 처리한다.
+
+결측치가 담긴 레코드가 344개 중 11개로 분석에 큰 지장이 없을 것이 없을 것이라 판단하여, 결측치가 포함된 레코드를 일괄적으로 처리하였다.
+
+## 3. \[Q1\] 펭귄의 종별 성비는 어떻게 되어있을까?
+
+\[section 1\]에 언급한 것과 같이 본사는 ESG 경영을 기반으로 지속가능한 펭귄 밀렵을 지향한다. 이에 펭귄의 각 종별 성비를 파악하기로 했다.
+
+```{python}
+def count_s(df, spec):
+    total = df.loc[df['species'] == spec].shape[0]
+    male = df.loc[(df['species'] == spec) & (df['sex'] == 'male'),:]
+    female = df.loc[(df['species'] == spec) & (df['sex'] == 'female'),:]
+    return male.shape[0] / total, female.shape[0] / total   
+
+specs = list(pen['species'].value_counts().keys())
+
+for s in specs:
+    print(s)
+    print(f"Male: {count_s(pen, s)[0]*100:.3f}% | Female: {count_s(pen, s)[1]*100:.3f}%")
+    print(f"Difference of ratio between male and female: {count_s(pen, s)[0]-count_s(pen, s)[1]:.3f}")
+```
+
+위의 코드에서 `count_s`는 각 종별 성비를 계산하는 함수이다.
+
+즉, 먼저 각 종에 대한 이름을 `specs`라는 변수에 list로 담고, `count_s`를 종 별로 반복한다.
+
+이를 통해 다음과 같이 알 수 있었다.
+
+**결론**
+
+-   펭귄의 각 종에 대한 성비는 대부분 5:5이지만, Gentoo는 수컷 개체의 비중이 암컷보다 약 2.5% 높다.
+
+## 4. \[Q2\] 펭귄의 각 개체에 대한 지역별 개체수는 어떻게 되어있는가?
+
+다음으로 펭귄의 각 개체에 대한 지역별 개체수를 알아보자.
+
+```{python}
+lands = list(pen['island'].value_counts().keys())
+for s in specs:
+    for l in lands:
+        spec_land = pen.loc[(pen['species'] == s) & (pen['island'] == l)].shape[0]    
+        print(f'Number of {s} in {l}: {spec_land}')
+    print('---------------------------------')
+```
+
+위의 코드 중 변수 `lands`는 각 종별 펭귄이 서식하고 있는 섬의 이름을 담은 list이다.
+
+이를 이용하여 각 종이 섬별 서식하고 있는 개체 수에 대해서 다음과 같이 알 수 있었다.
+
+**결론**
+
+-   Adelie는 각 섬별로 고르게 분포되어 있는 것으로 보여지지만, Dream 섬에 가장 많이 서식하고 있다.
+-   Gentoo는 Biscoe 섬에 모두 서식하고 있다.
+-   Chinstrap은 모두 Dream 섬에 모두 서식하고 있다.
+
+## 5. \[Q3\] 펭귄의 종별 부리 길이 분포는 어떻게 구성되어 있는가?
+
+고객의 요구사항인 부리의 길이가 긴 펭귄이 어떤 종인지 알아보자.
+
+우리 펭귄유괴단은 각 펭귄의 종별로 부리 길이가 어떻게 분포되어 있는지 확인해보기로 했다.
+
+이를 위해, 평균을 기준으로 각 종별로 부리 길이가 긴 개체수와 짧은 개체수를 알아보기로 했다.
+
+```{python}
+for s in specs:
+    s_short = pen.loc[(pen['species'] == s) & (pen['bill_length_mm'] < np.mean(pen['bill_length_mm']))].shape[0]
+    s_long = pen.loc[(pen['species'] == s) & (pen['bill_length_mm'] > np.mean(pen['bill_length_mm']))].shape[0]  
+    
+    print(f'{s} | # of short bill length: {s_short} |  # of long bill length: {s_long}')
+```
+
+마찬가지로 \[section 3\]에서 만든 종별 이름이 담긴 list인 `specs`변수를 이용하여 종 별로 부리 평균 길이보다 짧은 개체 수 (`s_short`)와 긴 개체 수 `s_long` 을 구하였다.
+
+이를 통해 다음과 같이 알 수 있었다.
+
+**결론**
+
+-   Adelie는 다른 종보다 부리 길이 평균이 보다 짧은 종이 많았고, Gentoo는 다른 종들보다 평균보다 긴 부리의 개체 수가 많았다.
+
+-   즉, 고객의 요구사항에 맞는 펭귄은 Gentoo일 것이다.
+
+## 6. 결론
+
+우리 펭귄유괴단은 고객의 요구사항에 맞는 펭귄을 밀렵을 위해 위의 분석에 따라 다음과 같이 밀렵 계획을 수립하였다.
+
+-   목표 종: Gentoo
+
+-   위치: Biscoe 섬
+
+목표 종인 Gentoo는 수컷의 비중이 더 높은 성비이므로 지속가능한 밀렵을 위해 수컷을 조금 더 많이 사냥하는 것으로 한다.
