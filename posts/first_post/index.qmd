@@ -3,7 +3,7 @@ title: "Palmer Penguins"
 author: "kyobin"
 date: "2025-03-07"
 categories: [news, code, analysis]
-image: "download.jpeg"
+image: "posts/first_post/download.jpeg"
 ---
 
 
