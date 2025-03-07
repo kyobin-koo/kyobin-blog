@@ -6,12 +6,13 @@ categories: [news, code, analysis]
 image: "/download.jpeg"
 ---
 
+![](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuhrP3xaNK-ni0uifTDiiUe9Ly3x3gtNtImA&s)
 
 1조: 구경민, 구교빈, 권서연
 
 작성일: 2025년 3월 06일
 
-![](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuhrP3xaNK-ni0uifTDiiUe9Ly3x3gtNtImA&s)
+
 
 ## Content
 
