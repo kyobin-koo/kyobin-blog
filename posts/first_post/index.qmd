@@ -3,7 +3,7 @@ title: "Palmer Penguins"
 author: "kyobin"
 date: "2025-03-07"
 categories: [news, code, analysis]
-image: "image.jpg"
+image: "penguins.png"
 ---
 
 ![](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuhrP3xaNK-ni0uifTDiiUe9Ly3x3gtNtImA&s)
