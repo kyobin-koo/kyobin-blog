@@ -4,7 +4,8 @@ author: "kyobin"
 date: "2025-03-07"
 categories: [news, code, analysis]
 format: html
-image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuhrP3xaNK-ni0uifTDiiUe9Ly3x3gtNtImA&s"
+# image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuhrP3xaNK-ni0uifTDiiUe9Ly3x3gtNtImA&s"
+image: "thumbnail.png"
 ---
 
 
