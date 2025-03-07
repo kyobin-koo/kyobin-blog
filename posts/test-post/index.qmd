@@ -1,0 +1,27 @@
+---
+title: "Test 블로그 포스팅팅"
+author: "Kyobin Koo"
+date: "2025-03-07"
+categories: [news, code, analysis]
+image: "image.jpg"
+---
+
+## 파이썬 데이터 분석
+
+### 넘파이
+
+```{python}
+import numpy as np
+
+a=np.arange(1,10,2)
+a
+```
+
+### 판다스
+
+
+```{python}
+import pandas as pd
+b=pd.Series(10)
+b
+```
